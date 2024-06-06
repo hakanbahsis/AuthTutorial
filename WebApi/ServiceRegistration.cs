@@ -1,5 +1,8 @@
 ﻿using Infrastructure.Context;
 using Infrastructure.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using WebApi.Permissions;
 
 namespace WebApi;
 
@@ -20,7 +23,10 @@ public static class ServiceRegistration
 
     internal static IServiceCollection AddIdentitySettings(this IServiceCollection services)
     {
-        services.AddIdentity<AppUser, AppRole>(opt =>
+        services
+            .AddSingleton<IAuthorizationPolicyProvider,PermissionPolicyProvider>()
+            .AddScoped<IAuthorizationHandler,PermissionAuthorizationHandler>()
+            .AddIdentity<AppUser, AppRole>(opt =>
         {
             opt.Password.RequiredLength = 6;
             opt.Password.RequireDigit = false;
@@ -29,7 +35,8 @@ public static class ServiceRegistration
             opt.Password.RequireNonAlphanumeric = false;
             opt.User.RequireUniqueEmail = true;
         })
-            .AddEntityFrameworkStores<AppDbContext>();
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
         return services;
     }
