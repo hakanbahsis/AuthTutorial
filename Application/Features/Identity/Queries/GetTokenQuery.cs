@@ -1,7 +1,9 @@
 ﻿using Application.Services.Identity;
+using Common.Authorization;
 using Common.Requests;
 using Common.Responses.Wrappers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Application.Features.Identity.Queries;
 public class GetTokenQuery:IRequest<IResponseWrapper>
@@ -23,3 +25,19 @@ public class GetTokenQueryHandler : IRequestHandler<GetTokenQuery, IResponseWrap
         return await _tokenService.GetTokenAsync(request.TokenRequest);
     }
 }
+
+
+public class GetTest : IRequest<IResponseWrapper>
+{
+    public string Test { get; set; }
+}
+
+
+public class GetTestHandler : IRequestHandler<GetTest, IResponseWrapper>
+{
+    public Task<IResponseWrapper> Handle(GetTest request, CancellationToken cancellationToken)
+    {
+        return ResponseWrapper.SuccessAsync("Ok");
+    }
+}
+

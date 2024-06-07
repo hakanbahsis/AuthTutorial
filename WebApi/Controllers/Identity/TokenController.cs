@@ -1,8 +1,10 @@
 ﻿using Application.Features.Identity.Queries;
+using Common.Authorization;
 using Common.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Attributes;
 
 namespace WebApi.Controllers.Identity;
 [Route("api/[controller]")]
@@ -24,6 +26,18 @@ public class TokenController : MyBaseController<TokenController>
     public async Task<IActionResult> GetRefreshTokenAsync([FromBody] RefreshTokenRequest refreshTokenRequest)
     {
         var response=await MediatorSender.Send(new GetRefreshTokenQuery { RefreshTokenRequest = refreshTokenRequest });
+        if (response.IsSuccessful)
+        {
+            return Ok(response);
+        }
+        return BadRequest(response);
+    }
+
+   [MustHavePermission(AppFeature.Employees,AppAction.Read)]
+    [HttpPost("test")]
+    public async Task<IActionResult> Test([FromBody] GetTest getTest)
+    {
+        var response = await MediatorSender.Send(new GetTest { Test = getTest.ToString() });
         if (response.IsSuccessful)
         {
             return Ok(response);
