@@ -21,7 +21,10 @@ public static class ServiceRegistration
     public static IServiceCollection AddIdentityServices(this IServiceCollection services)
     {
         services.AddTransient<ITokenService, TokenService>()
-            .AddTransient<IUserService,UserService>();
+            .AddTransient<IUserService,UserService>()
+            .AddTransient<IRoleService,RoleService>()
+            .AddHttpContextAccessor()
+            .AddScoped<ICurrentUserService,CurrentUserService>();
         return services;
     }
     public static IServiceCollection AddEmployeeServices(this IServiceCollection services)
