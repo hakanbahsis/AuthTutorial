@@ -1,6 +1,6 @@
 ﻿using Application.Services.Identity;
 using Common.Authorization;
-using Common.Requests;
+using Common.Requests.Identity;
 using Common.Responses.Wrappers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

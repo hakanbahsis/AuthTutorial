@@ -1,5 +1,7 @@
-﻿using Application.Services.Identity;
+﻿using Application.Services;
+using Application.Services.Identity;
 using Infrastructure.Context;
+using Infrastructure.Services;
 using Infrastructure.Services.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +19,13 @@ public static class ServiceRegistration
 
     public static IServiceCollection AddIdentityServices(this IServiceCollection services)
     {
-        services.AddTransient<ITokenService, TokenService>();
+        services.AddTransient<ITokenService, TokenService>()
+            .AddTransient<IUserService,UserService>();
+        return services;
+    }
+    public static IServiceCollection AddEmployeeServices(this IServiceCollection services)
+    {
+        services.AddTransient<IEmployeeService, EmployeeService>();
         return services;
     }
 }
