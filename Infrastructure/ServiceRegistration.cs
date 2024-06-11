@@ -6,6 +6,7 @@ using Infrastructure.Services.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Infrastructure;
 public static class ServiceRegistration
@@ -27,5 +28,12 @@ public static class ServiceRegistration
     {
         services.AddTransient<IEmployeeService, EmployeeService>();
         return services;
+    }
+
+    public static void AddInfrastructureDependencies(this IServiceCollection services)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        services.AddAutoMapper(typeof(ServiceRegistration).Assembly);
+        
     }
 }
