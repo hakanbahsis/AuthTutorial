@@ -5,8 +5,8 @@ using Common.Responses.Wrappers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Application.Features.Identity.Queries;
-public class GetTokenQuery:IRequest<IResponseWrapper>
+namespace Application.Features.Identity.Token.Queries;
+public class GetTokenQuery : IRequest<IResponseWrapper>
 {
     public TokenRequest TokenRequest { get; set; }
 }

@@ -3,10 +3,10 @@ using Common.Requests.Identity;
 using Common.Responses.Wrappers;
 using MediatR;
 
-namespace Application.Features.Identity.Commands;
-public class ChangeUserStatusCommand:IRequest<IResponseWrapper>
+namespace Application.Features.Identity.Users.Commands;
+public class ChangeUserStatusCommand : IRequest<IResponseWrapper>
 {
-    public ChangeUserStatusRequest  ChangeUserStatus{ get; set; }
+    public ChangeUserStatusRequest ChangeUserStatus { get; set; }
 }
 
 public class ChangeUserStatusCommandHandler : IRequestHandler<ChangeUserStatusCommand, IResponseWrapper>

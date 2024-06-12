@@ -1,8 +1,7 @@
-﻿using Application.Features.Identity.Queries;
+﻿using Application.Features.Identity.Token.Queries;
 using Common.Authorization;
 using Common.Requests.Identity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Attributes;
 

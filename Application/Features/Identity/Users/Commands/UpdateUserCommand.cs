@@ -8,10 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Identity.Commands;
-public class UpdateUserCommand:IRequest<IResponseWrapper>
+namespace Application.Features.Identity.Users.Commands;
+public class UpdateUserCommand : IRequest<IResponseWrapper>
 {
-    public UpdateUserRequest     UpdateUserRequest { get; set; }
+    public UpdateUserRequest UpdateUserRequest { get; set; }
 
 }
 

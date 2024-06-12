@@ -2,8 +2,8 @@
 using Common.Responses.Wrappers;
 using MediatR;
 
-namespace Application.Features.Identity.Queries;
-public class GetUserByIdQuery:IRequest<IResponseWrapper>
+namespace Application.Features.Identity.Users.Queries;
+public class GetUserByIdQuery : IRequest<IResponseWrapper>
 {
     public Guid UserId { get; set; }
 }

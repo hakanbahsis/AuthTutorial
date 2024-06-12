@@ -8,10 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Identity.Commands;
-public class UserRegistrationCommand:IRequest<IResponseWrapper>
+namespace Application.Features.Identity.Users.Commands;
+public class UserRegistrationCommand : IRequest<IResponseWrapper>
 {
-    public UserRegistrationRequest   UserRegistrationRequest{ get; set; }
+    public UserRegistrationRequest UserRegistrationRequest { get; set; }
 }
 
 public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCommand, IResponseWrapper>

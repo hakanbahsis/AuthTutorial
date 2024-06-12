@@ -3,8 +3,8 @@ using Common.Requests.Identity;
 using Common.Responses.Wrappers;
 using MediatR;
 
-namespace Application.Features.Identity.Commands;
-public class ChangeUserPasswordCommand:IRequest<IResponseWrapper>
+namespace Application.Features.Identity.Users.Commands;
+public class ChangeUserPasswordCommand : IRequest<IResponseWrapper>
 {
     public ChangePasswordRequest ChangePasswordRequest { get; set; }
 }

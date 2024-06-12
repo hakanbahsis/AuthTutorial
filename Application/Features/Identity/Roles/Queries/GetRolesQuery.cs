@@ -2,23 +2,23 @@
 using Common.Responses.Wrappers;
 using MediatR;
 
-namespace Application.Features.Identity.Queries;
+namespace Application.Features.Identity.Roles.Queries;
 public class GetRolesQuery:IRequest<IResponseWrapper>
 {
-    public Guid UserId { get; set; }
+
 }
 
 public class GetRolesQueryHandler : IRequestHandler<GetRolesQuery, IResponseWrapper>
 {
-    private readonly IUserService _userService;
+    private readonly IRoleService _roleService;
 
-    public GetRolesQueryHandler(IUserService userService)
+    public GetRolesQueryHandler(IRoleService roleService)
     {
-        _userService = userService;
+        _roleService = roleService;
     }
 
     public async Task<IResponseWrapper> Handle(GetRolesQuery request, CancellationToken cancellationToken)
     {
-        return await _userService.GetAppRolesAsync(request.UserId);
+        return await _roleService.GetRolesAsync();
     }
 }

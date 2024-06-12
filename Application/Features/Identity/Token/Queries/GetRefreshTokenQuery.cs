@@ -9,10 +9,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Identity.Queries;
-public class GetRefreshTokenQuery:IRequest<IResponseWrapper>
+namespace Application.Features.Identity.Token.Queries;
+public class GetRefreshTokenQuery : IRequest<IResponseWrapper>
 {
-    public RefreshTokenRequest  RefreshTokenRequest { get; set; }
+    public RefreshTokenRequest RefreshTokenRequest { get; set; }
 
 }
 
