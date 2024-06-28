@@ -1,0 +1,35 @@
+﻿using Application.Exceptions;
+using FluentValidation;
+using MediatR;
+
+namespace Application.Pipelines;
+public class ValidationPipelineBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>,IValidateMe
+{
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
+
+    public ValidationPipelineBehaviour(IEnumerable<IValidator<TRequest>> validators)
+    {
+        _validators = validators;
+    }
+
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    {
+        if(_validators.Any())
+        {
+            var context = new ValidationContext<TRequest>(request);
+            List<string> errors = new();
+            var validationResults = await Task.WhenAll(_validators.Select(vr => vr.ValidateAsync(context, cancellationToken)));
+            var failures=validationResults.SelectMany(vr=>vr.Errors).Where(f=>f!=null).ToList();
+
+            foreach(var failure in failures)
+            {
+                errors.Add(failure.ErrorMessage);
+            }
+
+            //Throw validation exception 
+            throw new CustomValidationException(errors, "One or more validation failure(s) occured.");
+        }
+        return await next();
+    }
+}
