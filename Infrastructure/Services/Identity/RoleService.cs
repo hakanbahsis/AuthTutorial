@@ -184,4 +184,38 @@ public class RoleService : IRoleService
         }
         return errorDescriptions;
     }
+
+    public async Task<IResponseWrapper> UpdateRolePermissionsAsync(UpdateRolePermissionsRequest request)
+    {
+        var roleInDb = await _roleManager.FindByIdAsync(request.RoleId);
+        if (roleInDb is not null)
+        {
+            if (roleInDb.Name==AppRoles.Admin)
+            {
+                return await ResponseWrapper<string>.FailAsync("Cannot change permissions for this role.");
+            }
+            var permissionsToBeAssigned=request.RoleClaims
+                .Where(rc=>rc.IsAssignedToRole==true)
+                .ToList();
+
+            var currentlyAssignedClaims = await _roleManager.GetClaimsAsync(roleInDb);
+            
+            //Drop
+            foreach (var claim in currentlyAssignedClaims)
+            {
+                await _roleManager.RemoveClaimAsync(roleInDb, claim);
+            }
+
+            //Add
+            foreach (var claim in permissionsToBeAssigned)
+            {
+                var mappedRoleClaim = _mapper.Map<AppRoleClaim>(claim);
+                await _appDbContext.RoleClaims.AddAsync(mappedRoleClaim);
+                await _appDbContext.SaveChangesAsync();
+            }
+
+            return await ResponseWrapper<string>.SuccessAsync("Role permissions updated succesfuly.");
+        }
+        return await ResponseWrapper.FailAsync("Role does not exists.");
+    }
 }
