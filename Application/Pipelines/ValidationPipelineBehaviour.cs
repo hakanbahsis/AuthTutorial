@@ -1,4 +1,5 @@
 ﻿using Application.Exceptions;
+using Common.Responses.Wrappers;
 using FluentValidation;
 using MediatR;
 
@@ -15,11 +16,15 @@ public class ValidationPipelineBehaviour<TRequest, TResponse> : IPipelineBehavio
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
+        
         if(_validators.Any())
         {
             var context = new ValidationContext<TRequest>(request);
-            List<string> errors = new();
             var validationResults = await Task.WhenAll(_validators.Select(vr => vr.ValidateAsync(context, cancellationToken)));
+            if (!validationResults.Any(vr=>vr.IsValid))
+            {
+
+            List<string> errors = new();
             var failures=validationResults.SelectMany(vr=>vr.Errors).Where(f=>f!=null).ToList();
 
             foreach(var failure in failures)
@@ -27,8 +32,11 @@ public class ValidationPipelineBehaviour<TRequest, TResponse> : IPipelineBehavio
                 errors.Add(failure.ErrorMessage);
             }
 
+            return (TResponse)await ResponseWrapper.FailAsync(errors);
             //Throw validation exception 
-            throw new CustomValidationException(errors, "One or more validation failure(s) occured.");
+            //throw new CustomValidationException(errors, "One or more validation failure(s) occured.");
+            }
+
         }
         return await next();
     }

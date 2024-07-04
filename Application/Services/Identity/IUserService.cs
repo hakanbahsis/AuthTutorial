@@ -1,4 +1,5 @@
 ﻿using Common.Requests.Identity;
+using Common.Responses.Identity;
 using Common.Responses.Wrappers;
 
 namespace Application.Services.Identity;
@@ -12,4 +13,5 @@ public interface IUserService
     Task<IResponseWrapper> ChangeUserStatusAsync(ChangeUserStatusRequest request);
     Task<IResponseWrapper> GetAppRolesAsync(Guid userId);
     Task<IResponseWrapper> UpdateUserRolesAsync(UpdateUserRolesRequest request);
+    Task<IResponseWrapper<UserResponse>> GetUserByEmailAsync(string email); 
 }

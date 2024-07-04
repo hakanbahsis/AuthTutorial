@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.Pipelines;
+using Application.Services;
 using AutoMapper;
 using Common.Requests.Employees;
 using Common.Responses.Employees;
@@ -7,7 +8,7 @@ using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Employees.Commands;
-public class CreateEmployeeCommand:IRequest<IResponseWrapper>
+public class CreateEmployeeCommand:IRequest<IResponseWrapper>,IValidateMe
 {
     public CreateEmployeeRequest CreateEmployeeRequest { get; set; }
 
@@ -26,8 +27,10 @@ public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeComman
     public async Task<IResponseWrapper> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
         var mappedEmployee=_mapper.Map<Employee>(request.CreateEmployeeRequest);
+
         var newEmployee=await _employeeService.CreateEmployeeAsync(mappedEmployee);
-        if (newEmployee != null)
+
+        if (newEmployee.Id.ToString() != null)
         {
            var  mappedNewEmployee=_mapper.Map<EmployeeResponse>(newEmployee);
             return await ResponseWrapper<EmployeeResponse>.SuccessAsync(mappedNewEmployee,"Employee created succesfuly.");

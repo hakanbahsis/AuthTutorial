@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Common.Responses.Employees;
 using Common.Responses.Identity;
+using Domain.Entities;
 using Infrastructure.Models;
 
 namespace Infrastructure;
@@ -10,6 +12,7 @@ public class MappingProfiles:Profile
         CreateMap<AppUser,UserResponse>().ReverseMap();
         CreateMap<AppRole, RoleResponse>().ReverseMap();
         CreateMap<AppRoleClaim,RoleClaimViewModel>().ReverseMap();
+
         
     }
 }
